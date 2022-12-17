@@ -37,10 +37,10 @@ import Token from "./token.js"
 				} else {
 					token._buffer += character
 				}
-				if(index === characters.length - 1) {
+				if(index === characters.length - 1 && token.buffer.length >= 1 && token.buffer.length <= 255) {
 					tokens.push(token)
 				}
-			} else if(state === Tokenizer.STATE_LOCAL_PART && character === "@") {
+			} else if(state === Tokenizer.STATE_LOCAL_PART && token.buffer.length >= 1 && token.buffer.length <= 64  && character === "@") {
 				tokens.push(token)
 				token = new Token(Token.TYPE.DOMAIN, "", index + 1)
 				state = Tokenizer.STATE_DOMAIN

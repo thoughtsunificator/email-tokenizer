@@ -1,6 +1,22 @@
 import assert from "assert"
 import { Tokenizer, Token } from "../index.js"
 
+function randomLocalPart(size) {
+	let str = ""
+	for(let i =0; i < size;i++) {
+		str += Tokenizer.LOCAL_PARTS_CHARACTERS[Math.round(Math.random() * (Tokenizer.LOCAL_PARTS_CHARACTERS.length - 1))]
+	}
+	return str
+}
+
+function randomDomainPart(size) {
+	let str = ""
+	for(let i =0; i < size;i++) {
+		str += Tokenizer.LOCAL_DOMAIN_CHARACTERS[Math.round(Math.random() * (Tokenizer.LOCAL_DOMAIN_CHARACTERS.length - 1))]
+	}
+	return str
+}
+
 describe("tokenizer", () => {
 
 	it("schema", () => {
@@ -36,9 +52,17 @@ describe("tokenizer", () => {
 	})
 
 	it("invalid", () => {
+		assert.notStrictEqual(Tokenizer.tokenize(`${randomLocalPart(64)}@f`), false)
+		assert.notStrictEqual(Tokenizer.tokenize(`${randomLocalPart(64)}@${randomDomainPart(255)}`), false)
+		assert.strictEqual(Tokenizer.tokenize(`${randomLocalPart(64)}@${randomDomainPart(256)}`), false)
+		assert.strictEqual(Tokenizer.tokenize(`f@${randomDomainPart(256)}`), false)
+		assert.strictEqual(Tokenizer.tokenize(`${randomLocalPart(65)}@f`), false)
+		assert.notStrictEqual(Tokenizer.tokenize("1@f"), false)
+		assert.notStrictEqual(Tokenizer.tokenize("1@f.t"), false)
 		assert.strictEqual(Tokenizer.tokenize("dsadsads"), false)
 		assert.strictEqual(Tokenizer.tokenize("te st @fdsfds.com"), false)
 		assert.strictEqual(Tokenizer.tokenize("test@fd sfds.com"), false)
+		assert.strictEqual(Tokenizer.tokenize("@f"), false)
 		assert.strictEqual(Tokenizer.tokenize("test@fdsfds..com"), false)
 		assert.strictEqual(Tokenizer.tokenize("test@@fdsfds.com"), false)
 		assert.strictEqual(Tokenizer.tokenize("@@fdsfds.com"), false)
