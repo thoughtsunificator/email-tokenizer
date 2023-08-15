@@ -18,4 +18,4 @@ const tokens = Tokenizer.tokenize("test@example.com")
 ````
 ### API
 
-See [https://thoughtsunificator.github.io/email-tokenizer](https://thoughtsunificator.github.io/email-tokenizer).
+See [http://email-tokenizer.unificator.me](http://email-tokenizer.unificator.me).
