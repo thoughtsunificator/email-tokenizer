@@ -33,6 +33,7 @@ describe("tokenizer", () => {
 	it("buffer", () => {
 		assert.strictEqual(Tokenizer.tokenize("test@fdsfds.com")[0].buffer, "test")
 		assert.strictEqual(Tokenizer.tokenize("test@fdsfds.com")[1].buffer, "fdsfds.com")
+		assert.strictEqual(Tokenizer.tokenize("test@localhost")[1].buffer, "localhost")
 		assert.strictEqual(Tokenizer.tokenize("tescxzcxzcxzt@fdsfds.fr")[0].buffer, "tescxzcxzcxzt")
 		assert.strictEqual(Tokenizer.tokenize("tescxzcxzcxzt@fdsfds.fr")[1].buffer, "fdsfds.fr")
 	})
@@ -40,6 +41,8 @@ describe("tokenizer", () => {
 	it("bufferIndex", () => {
 		assert.strictEqual(Tokenizer.tokenize("test@fdsfds.com")[0].bufferIndex, 0)
 		assert.strictEqual(Tokenizer.tokenize("test@fdsfds.com")[1].bufferIndex, 5)
+		assert.strictEqual(Tokenizer.tokenize("test@localhost")[0].bufferIndex, 0)
+		assert.strictEqual(Tokenizer.tokenize("test@localhost")[1].bufferIndex, 5)
 		assert.strictEqual(Tokenizer.tokenize("tescxzcxzcxzt@fdsfds.fr")[0].bufferIndex, 0)
 		assert.strictEqual(Tokenizer.tokenize("tescxzcxzcxzt@fdsfds.fr")[1].bufferIndex, 14)
 	})
@@ -69,6 +72,7 @@ describe("tokenizer", () => {
 		assert.strictEqual(Tokenizer.tokenize("@s@fdsfds.com"), false)
 		assert.strictEqual(Tokenizer.tokenize("@s@fdsfds@.com"), false)
 		assert.strictEqual(Tokenizer.tokenize("@.com"), false)
+		assert.notStrictEqual(Tokenizer.tokenize("test@localhost"), false)
 	})
 
 })
